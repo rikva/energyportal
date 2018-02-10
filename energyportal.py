@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from flask import Flask, request, json
 
 from db import insert_datapoint, insert_datapoints, create_db
@@ -6,13 +7,13 @@ from db import insert_datapoint, insert_datapoints, create_db
 app = Flask(__name__)
 create_db()
 
-auth_token = 'my secret'
+auth_token = os.getenv('AUTH_TOKEN')
 
 
 @app.route("/input", methods=["POST"])
 def post():
     request_token = request.headers.get("Authorization")
-    if request_token != auth_token:
+    if request_token is None or request_token != auth_token:
         return "Unauthorized", 401
 
     data = json.loads(request.data)
