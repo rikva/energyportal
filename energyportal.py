@@ -6,9 +6,15 @@ from db import insert_datapoint, insert_datapoints, create_db
 app = Flask(__name__)
 create_db()
 
+auth_token = 'my secret'
 
-@app.route('/input', methods=['POST'])
+
+@app.route("/input", methods=["POST"])
 def post():
+    request_token = request.headers.get("Authorization")
+    if request_token != auth_token:
+        return "Unauthorized", 401
+
     data = json.loads(request.data)
     if isinstance(data, dict):
         insert_datapoint(**data)
@@ -18,5 +24,5 @@ def post():
     return "OK", 201
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()

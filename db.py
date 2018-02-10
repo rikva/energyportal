@@ -3,7 +3,8 @@ import sqlite3
 
 import os
 
-db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'energy.db')
+db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                       "energy.db")
 conn = sqlite3.connect(db_file)
 
 
