@@ -23,13 +23,8 @@ def insert_datapoint(timestamp, kwh_high_total, kwh_low_total,
                      kw_current, gas_m3_total):
     c = conn.cursor()
     c.execute(
-        f"INSERT INTO datapoints VALUES ("
-        f"{timestamp}, "
-        f"{kwh_high_total}, "
-        f"{kwh_low_total}, "
-        f"{kw_current}, "
-        f"{gas_m3_total}"
-        f")")
+        "INSERT INTO datapoints VALUES ({0},{1},{2},{3},{4})".format(
+            timestamp, kwh_high_total,kwh_low_total, kw_current, gas_m3_total))
     conn.commit()
 
 
