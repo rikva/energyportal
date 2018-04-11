@@ -2,6 +2,7 @@
 import sqlite3
 
 import os
+import time
 
 db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                        "energy.db")
@@ -32,3 +33,39 @@ def insert_datapoints(datapoints):
     for datapoint in datapoints:
         insert_datapoint(**datapoint)
 
+
+def get_last_hour():
+    # last hour grouped per 10 minutes
+    now = time.time()
+    c = conn.cursor()
+
+    query = """
+    SELECT MAX(timestamp),
+           MAX(kwh_high_total), 
+           MAX(kwh_low_total), 
+           MAX(gas_m3_total), 
+           SUM(kw_current) 
+           FROM datapoints 
+           WHERE timestamp > {0} AND timestamp <= {1};
+    """
+
+    periods = [
+        (now, now - 600),
+        (now - 600, now - (600 * 2)),
+        (now - (600 * 2), now - (600 * 3)),
+        (now - (600 * 3), now - (600 * 4)),
+        (now - (600 * 4), now - (600 * 5)),
+        (now - (600 * 5), now - (600 * 6)),
+    ]
+
+    for p_end, p_start in periods:
+        c.execute(query.format(p_start, p_end))
+        conn.commit()
+        result = c.fetchone()
+        yield {
+            'timestamp': result[0],
+            'kwh_high_total': result[1],
+            'kwh_low_total': result[2],
+            'gas_m3_total': result[3],
+            'kw_current': result[4],
+        }
