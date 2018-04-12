@@ -29,8 +29,8 @@ def post():
 def get_last_hour(interval, datapoints):
     electricity = []
 
-    for timestamp, datadict in db.get_data_points(interval,
-                                                  datapoints).items():
+    for timestamp, datadict in db.get_data_points(int(interval),
+                                                  int(datapoints)).items():
         point = dict()
         point['x'] = timestamp
         point['y'] = datadict['kw_current']
