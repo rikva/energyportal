@@ -58,14 +58,17 @@ def get_last_hour():
         (now - (600 * 5), now - (600 * 6)),
     ]
 
+    ret = {}
+
     for p_end, p_start in periods:
         c.execute(query.format(p_start, p_end))
         conn.commit()
         result = c.fetchone()
-        yield {
-            'timestamp': result[0],
+        ret[result[0]] = {
             'kwh_high_total': result[1],
             'kwh_low_total': result[2],
             'gas_m3_total': result[3],
             'kw_current': result[4],
         }
+
+    return ret

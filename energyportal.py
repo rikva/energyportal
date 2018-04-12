@@ -2,10 +2,10 @@
 import os
 from flask import Flask, request, json
 
-from db import insert_datapoint, insert_datapoints, create_db
+import db
 
 app = Flask(__name__)
-create_db()
+db.create_db()
 
 auth_token = os.getenv('AUTH_TOKEN')
 
@@ -18,11 +18,21 @@ def post():
 
     data = json.loads(request.data)
     if isinstance(data, dict):
-        insert_datapoint(**data)
+        db.insert_datapoint(**data)
     elif isinstance(data, list):
-        insert_datapoints(data)
+        db.insert_datapoints(data)
 
     return "OK", 201
+
+
+@app.route("/last-hour", methods=["GET"])
+def get_last_hour():
+    electricity = {}
+
+    for timestamp, datadict in db.get_last_hour().items():
+        electricity[timestamp] = datadict['kw_current']
+
+    return json.dumps(electricity), 200
 
 
 if __name__ == "__main__":
