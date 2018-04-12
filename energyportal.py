@@ -30,7 +30,8 @@ def get_last_hour():
     electricity = {}
 
     for timestamp, datadict in db.get_last_hour().items():
-        electricity[timestamp] = datadict['kw_current']
+        electricity['x'] = timestamp
+        electricity['y'] = datadict['kw_current']
 
     return json.dumps(electricity), 200
 
