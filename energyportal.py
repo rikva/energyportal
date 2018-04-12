@@ -27,11 +27,13 @@ def post():
 
 @app.route("/last-hour", methods=["GET"])
 def get_last_hour():
-    electricity = {}
+    electricity = []
 
     for timestamp, datadict in db.get_last_hour().items():
-        electricity['x'] = timestamp
-        electricity['y'] = datadict['kw_current']
+        point = dict()
+        point['x'] = timestamp
+        point['y'] = datadict['kw_current']
+        electricity.append(point)
 
     return json.dumps(electricity), 200
 
