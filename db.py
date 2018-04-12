@@ -34,8 +34,7 @@ def insert_datapoints(datapoints):
         insert_datapoint(**datapoint)
 
 
-def get_last_hour():
-    # last hour grouped per 10 minutes
+def get_data_points(interval, points):
     now = time.time()
     c = conn.cursor()
 
@@ -50,12 +49,10 @@ def get_last_hour():
     """
 
     periods = [
-        (now, now - 600),
-        (now - 600, now - (600 * 2)),
-        (now - (600 * 2), now - (600 * 3)),
-        (now - (600 * 3), now - (600 * 4)),
-        (now - (600 * 4), now - (600 * 5)),
-        (now - (600 * 5), now - (600 * 6)),
+        (now, now - interval),
+    ] + [
+        (now - (interval * i), now - (interval * i+1))
+        for i in range(1, points)
     ]
 
     ret = {}

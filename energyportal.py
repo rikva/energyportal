@@ -25,11 +25,12 @@ def post():
     return "OK", 201
 
 
-@app.route("/last-hour", methods=["GET"])
-def get_last_hour():
+@app.route("/graph-data/<interval>/<datapoints>", methods=["GET"])
+def get_last_hour(interval, datapoints):
     electricity = []
 
-    for timestamp, datadict in db.get_last_hour().items():
+    for timestamp, datadict in db.get_data_points(interval,
+                                                  datapoints).items():
         point = dict()
         point['x'] = timestamp
         point['y'] = datadict['kw_current']
