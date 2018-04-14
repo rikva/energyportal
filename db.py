@@ -51,7 +51,7 @@ def get_data_points(interval, points):
     periods = [
         (now, now - interval),
     ] + [
-        (now - (interval * i), now - (interval * i+1))
+        (now - (interval * i), now - (interval * (i+1)))
         for i in range(1, points)
     ]
 
