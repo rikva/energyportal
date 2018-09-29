@@ -6,10 +6,10 @@ import time
 
 db_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),
                        "energy.db")
-conn = sqlite3.connect(db_file)
 
 
 def create_db():
+    conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS datapoints
                  (timestamp INTEGER, 
@@ -22,10 +22,11 @@ def create_db():
 
 def insert_datapoint(timestamp, kwh_high_total, kwh_low_total,
                      kw_current, gas_m3_total):
+    conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute(
         "INSERT INTO datapoints VALUES ({0},{1},{2},{3},{4})".format(
-            timestamp, kwh_high_total,kwh_low_total, kw_current, gas_m3_total))
+            timestamp, kwh_high_total, kwh_low_total, kw_current, gas_m3_total))
     conn.commit()
 
 
@@ -36,6 +37,7 @@ def insert_datapoints(datapoints):
 
 def get_data_points(interval, points):
     now = time.time()
+    conn = sqlite3.connect(db_file)
     c = conn.cursor()
 
     query = """
