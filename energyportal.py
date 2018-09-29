@@ -27,16 +27,16 @@ def post():
 
 @app.route("/graph-data/<metric>/<interval>/<datapoints>", methods=["GET"])
 def get_last_hour(metric, interval, datapoints):
-    electricity = []
+    returndata = []
 
     for timestamp, datadict in db.get_data_points(int(interval),
                                                   int(datapoints)).items():
         point = dict()
         point['x'] = timestamp
         point['y'] = datadict[metric]
-        electricity.append(point)
+        returndata.append(point)
 
-    return json.dumps(electricity), 200
+    return json.dumps(returndata), 200
 
 
 if __name__ == "__main__":
