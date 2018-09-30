@@ -63,11 +63,16 @@ def get_data_points(interval, points):
         c.execute(query.format(p_start, p_end))
         conn.commit()
         result = c.fetchone()
-        ret[int(float(result[0]))] = {
-            'kwh_high_total': result[1],
-            'kwh_low_total': result[2],
-            'gas_m3_total': result[3],
-            'kw_current': result[4],
-        }
+
+        try:
+            ret[int(float(result[0]))] = {
+                'kwh_high_total': result[1],
+                'kwh_low_total': result[2],
+                'gas_m3_total': result[3],
+                'kw_current': result[4],
+            }
+        except TypeError:
+            # timestamp was None
+            continue
 
     return ret
