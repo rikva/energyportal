@@ -25,12 +25,19 @@ def post():
     return "OK", 201
 
 
-@app.route("/graph-data/<metric>/<interval>/<datapoints>", methods=["GET"])
-def get_last_hour(metric, interval, datapoints):
+@app.route("/graph-data/<interval_secs>/<num_datapoints>", methods=["GET"])
+def data_points_per_metric(interval_secs, num_datapoints):
+    ret = db.get_data_points(int(interval_secs), int(num_datapoints)).items()
+    return json.dumps(ret), 200
+
+
+@app.route("/graph-data/<metric>/<interval_secs>/<num_datapoints>",
+           methods=["GET"])
+def data_points_per_metric(metric, interval_secs, num_datapoints):
     returndata = []
 
-    for timestamp, datadict in db.get_data_points(int(interval),
-                                                  int(datapoints)).items():
+    for timestamp, datadict in db.get_data_points(int(interval_secs),
+                                                  int(num_datapoints)).items():
         point = dict()
         point['x'] = timestamp
         point['y'] = datadict[metric]
