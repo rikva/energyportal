@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, json, make_response
+from flask import Flask, json, make_response, render_template
 
 import db
 
 app = Flask(__name__)
 db.create_db()
+
+
+@app.route("/")
+def index():
+    return render_template('index.html')
 
 
 @app.route("/graph-data/<interval_secs>/<num_datapoints>", methods=["GET"])

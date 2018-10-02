@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Energy Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+Interval: <input type="number" id="interval-secs" value="300">
+Datapoints: <input type="number" id="num-points" value="12">
+<button id="btn-refresh">Refresh</button>
+
+<canvas id="myChart" width="100" height="800"></canvas>
+
+<script>
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+
+    function refresh() {
+        console.log('Refreshing')
+        var interval = document.getElementById('interval-secs').value
+        var datapoints = document.getElementById('num-points').value
+
+        getData(interval, datapoints, function(result) {
+                myChart.data.datasets[0].data = result['kw_current']
+                myChart.data.datasets[1].data = result['gas_m3_total']
+                myChart.data.datasets[2].data = result['kwh_high_total']
+                myChart.data.datasets[3].data = result['kwh_low_total']
+                window.myChart.update()
+            })
+    }
+
+    document.getElementById("btn-refresh").addEventListener('click', refresh)
+
+    function getData(interval_seconds, num_points, callback) {
+       $.getJSON('/graph-data/' + interval_seconds + '/' + num_points, function(data) {
+           var result = {}
+
+           for (var timestamp in data) {
+               for (var metric in data[timestamp]) {
+                   if (result[metric] === undefined) {
+                       result[metric] = []
+                   }
+               var intTimestamp = parseInt(timestamp) * 1000
+               result[metric].push({x: new Date(intTimestamp), y: data[timestamp][metric]})
+               }
+           }
+
+           callback(result)
+
+       })
+    }
+
+
+    var ctx = document.getElementById("myChart");
+
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'power usage',
+                borderWidth: 3,
+                borderColor: window.chartColors.blue,
+                backgroundColor: window.chartColors.blue,
+                fill: false,
+                yAxisID: 'y-axis-1'
+            },
+            {
+                label: 'cumulative gas usage',
+                borderWidth: 3,
+                borderColor: window.chartColors.red,
+                backgroundColor: window.chartColors.red,
+                fill: false,
+                yAxisID: 'y-axis-2'
+            },
+            {
+                label: 'cumulative power in high rate',
+                borderWidth: 2,
+                borderColor: window.chartColors.orange,
+                backgroundColor: window.chartColors.orange,
+                fill: false,
+                yAxisID: 'y-axis-1'
+            },
+            {
+                label: 'cumulative power in low rate',
+                borderWidth: 2,
+                borderColor: window.chartColors.yellow,
+                backgroundColor: window.chartColors.yellow,
+                fill: false,
+                yAxisID: 'y-axis-1'
+            }
+            ]
+        },
+        options: {
+            stacked: false,
+            responsive: true,
+            maintainAspectRatio: false,
+            hoverMode: 'index',
+            scales: {
+                yAxes: [{
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    id: 'y-axis-1',
+
+                    ticks: {
+                        beginAtZero:false,
+                        source: 'auto',
+                        maxTicksLimit: 5,
+                    }
+                }, {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    id: 'y-axis-2',
+
+                    // grid line settings
+                    gridLines: {
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                    },
+
+                    ticks: {
+                        beginAtZero:false,
+                        source: 'auto',
+                    }
+                }],
+
+
+                xAxes: [{
+                    type: 'time',
+                    distribution: 'series',
+                    time: {
+                    }
+
+                }]
+            }
+        }
+    });
+
+    refresh()
+    window.setInterval(refresh, 60000);
+</script>
+</body>
+</html>
