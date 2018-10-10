@@ -30,10 +30,10 @@ Datapoints: <input type="number" id="num-points" value="12">
         var datapoints = document.getElementById('num-points').value
 
         getData(interval, datapoints, function(result) {
-                myChart.data.datasets[0].data = result['kw_current']
-                myChart.data.datasets[1].data = result['gas_m3_total']
-                myChart.data.datasets[2].data = result['kwh_high_total']
-                myChart.data.datasets[3].data = result['kwh_low_total']
+                myChart.data.datasets[0].data = result['power_usage']
+                myChart.data.datasets[1].data = result['gas_usage']
+                myChart.data.datasets[2].data = result['power_cost']
+                myChart.data.datasets[3].data = result['gas_cost']
                 window.myChart.update()
             })
     }
@@ -66,7 +66,7 @@ Datapoints: <input type="number" id="num-points" value="12">
         type: 'line',
         data: {
             datasets: [{
-                label: 'power usage',
+                label: 'Power usage',
                 borderWidth: 3,
                 borderColor: window.chartColors.blue,
                 backgroundColor: window.chartColors.blue,
@@ -74,7 +74,7 @@ Datapoints: <input type="number" id="num-points" value="12">
                 yAxisID: 'y-axis-1'
             },
             {
-                label: 'cumulative gas usage',
+                label: 'Gas usage',
                 borderWidth: 3,
                 borderColor: window.chartColors.red,
                 backgroundColor: window.chartColors.red,
@@ -82,7 +82,7 @@ Datapoints: <input type="number" id="num-points" value="12">
                 yAxisID: 'y-axis-2'
             },
             {
-                label: 'cumulative power in high rate',
+                label: 'Power cost',
                 borderWidth: 2,
                 borderColor: window.chartColors.orange,
                 backgroundColor: window.chartColors.orange,
@@ -90,7 +90,7 @@ Datapoints: <input type="number" id="num-points" value="12">
                 yAxisID: 'y-axis-1'
             },
             {
-                label: 'cumulative power in low rate',
+                label: 'Gas cost',
                 borderWidth: 2,
                 borderColor: window.chartColors.yellow,
                 backgroundColor: window.chartColors.yellow,
