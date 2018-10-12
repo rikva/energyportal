@@ -36,6 +36,8 @@ def insert_datapoints(datapoints):
 
 
 def get_data_points(interval, points):
+    print('Processing request for interval {} and points {}'.format(
+        interval, points))
     now = time.time()
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
