@@ -63,6 +63,13 @@ def get_data_points(interval, points):
         c.execute(query.format(p_start, p_end))
         conn.commit()
         result = c.fetchone()
+        print(result)
+
+        # Skip empty result that looks like
+        # (None, None, None, None, None)
+        if not all(result):
+            print('Skipping empty result')
+            continue
 
         try:
             ret[int(float(result[0]))] = {
