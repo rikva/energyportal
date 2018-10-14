@@ -30,11 +30,13 @@ Datapoints: <input type="number" id="num-points" value="12">
         var datapoints = document.getElementById('num-points').value
 
         getData(interval, datapoints, function(result) {
-                myChart.data.datasets[0].data = result['kw_current']
-                myChart.data.datasets[1].data = result['gas_m3_total']
-                myChart.data.datasets[2].data = result['kwh_high_total']
-                myChart.data.datasets[3].data = result['kwh_low_total']
-                myChart.data.datasets[4].data = result['gas_used']
+                {#myChart.data.datasets[0].data = result['kw_current']#}
+                {#myChart.data.datasets[1].data = result['gas_m3_total']#}
+                {#myChart.data.datasets[2].data = result['kwh_high_total']#}
+                {#myChart.data.datasets[3].data = result['kwh_low_total']#}
+                myChart.data.datasets[0].data = result['gas_used']
+                myChart.data.datasets[1].data = result['low_rate_powed_used']
+                myChart.data.datasets[2].data = result['high_rate_powed_used']
                 window.myChart.update()
             })
     }
@@ -66,46 +68,31 @@ Datapoints: <input type="number" id="num-points" value="12">
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            datasets: [{
-                label: 'power usage',
-                borderWidth: 3,
-                borderColor: window.chartColors.blue,
-                backgroundColor: window.chartColors.blue,
-                fill: false,
-                yAxisID: 'y-axis-1'
-            },
-            {
-                label: 'cumulative gas usage',
-                borderWidth: 3,
-                borderColor: window.chartColors.red,
-                backgroundColor: window.chartColors.red,
-                fill: false,
-                yAxisID: 'y-axis-2'
-            },
-            {
-                label: 'cumulative power in high rate',
-                borderWidth: 2,
-                borderColor: window.chartColors.orange,
-                backgroundColor: window.chartColors.orange,
-                fill: false,
-                yAxisID: 'y-axis-1'
-            },
-            {
-                label: 'cumulative power in low rate',
-                borderWidth: 2,
-                borderColor: window.chartColors.yellow,
-                backgroundColor: window.chartColors.yellow,
-                fill: false,
-                yAxisID: 'y-axis-1'
-            },
-            {
-                label: 'gas used',
-                borderWidth: 3,
-                borderColor: window.chartColors.purple,
-                backgroundColor: window.chartColors.purple,
-                fill: false,
-                yAxisID: 'y-axis-2'
-            }
+            datasets: [
+                {
+                    label: 'gas usage',
+                    borderWidth: 3,
+                    borderColor: window.chartColors.blue,
+                    backgroundColor: window.chartColors.blue,
+                    fill: false,
+                    yAxisID: 'y-axis-2'
+                },
+                {
+                    label: 'low rate power usage',
+                    borderWidth: 2,
+                    borderColor: window.chartColors.orange,
+                    backgroundColor: window.chartColors.orange,
+                    fill: false,
+                    yAxisID: 'y-axis-1'
+                },
+                {
+                    label: 'high rate power usage',
+                    borderWidth: 2,
+                    borderColor: window.chartColors.red,
+                    backgroundColor: window.chartColors.red,
+                    fill: false,
+                    yAxisID: 'y-axis-1'
+                }
             ]
         },
         options: {
