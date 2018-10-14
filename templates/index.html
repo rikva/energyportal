@@ -34,6 +34,7 @@ Datapoints: <input type="number" id="num-points" value="12">
                 myChart.data.datasets[1].data = result['gas_m3_total']
                 myChart.data.datasets[2].data = result['kwh_high_total']
                 myChart.data.datasets[3].data = result['kwh_low_total']
+                myChart.data.datasets[4].data = result['gas_used']
                 window.myChart.update()
             })
     }
@@ -96,6 +97,14 @@ Datapoints: <input type="number" id="num-points" value="12">
                 backgroundColor: window.chartColors.yellow,
                 fill: false,
                 yAxisID: 'y-axis-1'
+            },
+            {
+                label: 'gas used',
+                borderWidth: 3,
+                borderColor: window.chartColors.purple,
+                backgroundColor: window.chartColors.purple,
+                fill: false,
+                yAxisID: 'y-axis-2'
             }
             ]
         },
