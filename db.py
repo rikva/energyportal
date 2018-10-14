@@ -47,7 +47,7 @@ def get_data_points(interval, points):
            MAX(kwh_high_total), 
            MAX(kwh_low_total), 
            MAX(gas_m3_total), 
-           SUM(kw_current) 
+           AVG(kw_current) 
            FROM datapoints 
            WHERE timestamp > {0} AND timestamp <= {1};
     """
