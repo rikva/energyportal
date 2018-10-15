@@ -21,9 +21,11 @@ def calculate_usage(datapoints: dict):
         high_rate_power_used = (datapoints[timestamp]['kwh_high_total'] -
                                 datapoints[prev_timestamp]['kwh_high_total'])
 
-        result[timestamp]['gas_used'] = gas_used
-        result[timestamp]['low_rate_powed_used'] = low_rate_power_used
-        result[timestamp]['high_rate_powed_used'] = high_rate_power_used
+        # use max() to prevent negative values on big jumps (caused
+        # by rehousing)
+        result[timestamp]['gas_used'] = max(0, gas_used)
+        result[timestamp]['low_rate_powed_used'] = max(0, low_rate_power_used)
+        result[timestamp]['high_rate_powed_used'] = max(0, high_rate_power_used)
 
         prev_timestamp = timestamp
 
