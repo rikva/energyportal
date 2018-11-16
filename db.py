@@ -47,7 +47,8 @@ def get_data_points(interval, points):
            MAX(kwh_high_total), 
            MAX(kwh_low_total), 
            MAX(gas_m3_total), 
-           AVG(kw_current) 
+           AVG(kw_current), 
+           MIN(kw_current) 
            FROM datapoints 
            WHERE timestamp > {0} AND timestamp <= {1};
     """
@@ -79,6 +80,7 @@ def get_data_points(interval, points):
                 'kwh_low_total': result[2],
                 'gas_m3_total': result[3],
                 'kw_current': result[4],
+                'kw_minimum': result[5],
             }
         except TypeError:
             # timestamp was None

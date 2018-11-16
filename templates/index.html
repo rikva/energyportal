@@ -38,6 +38,7 @@ Datapoints: <input type="number" id="num-points" value="12">
                 myChart.data.datasets[1].data = result['low_rate_power_used']
                 myChart.data.datasets[2].data = result['high_rate_power_used']
                 myChart.data.datasets[3].data = result['total_power_used']
+                myChart.data.datasets[4].data = result['kw_minimum']
                 window.myChart.update()
             })
     }
@@ -63,9 +64,7 @@ Datapoints: <input type="number" id="num-points" value="12">
        })
     }
 
-
     var ctx = document.getElementById("myChart");
-
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -99,6 +98,14 @@ Datapoints: <input type="number" id="num-points" value="12">
                     borderWidth: 2,
                     borderColor: window.chartColors.purple,
                     backgroundColor: window.chartColors.purple,
+                    fill: false,
+                    yAxisID: 'y-axis-1'
+                },
+                {
+                    label: 'minimum power usage',
+                    borderWidth: 2,
+                    borderColor: window.chartColors.grey,
+                    backgroundColor: window.chartColors.grey,
                     fill: false,
                     yAxisID: 'y-axis-1'
                 }
