@@ -35,8 +35,9 @@ Datapoints: <input type="number" id="num-points" value="12">
                 {#myChart.data.datasets[2].data = result['kwh_high_total']#}
                 {#myChart.data.datasets[3].data = result['kwh_low_total']#}
                 myChart.data.datasets[0].data = result['gas_used']
-                myChart.data.datasets[1].data = result['low_rate_powed_used']
-                myChart.data.datasets[2].data = result['high_rate_powed_used']
+                myChart.data.datasets[1].data = result['low_rate_power_used']
+                myChart.data.datasets[2].data = result['high_rate_power_used']
+                myChart.data.datasets[3].data = result['total_power_used']
                 window.myChart.update()
             })
     }
@@ -90,6 +91,14 @@ Datapoints: <input type="number" id="num-points" value="12">
                     borderWidth: 2,
                     borderColor: window.chartColors.red,
                     backgroundColor: window.chartColors.red,
+                    fill: false,
+                    yAxisID: 'y-axis-1'
+                },
+                {
+                    label: 'total power usage',
+                    borderWidth: 2,
+                    borderColor: window.chartColors.purple,
+                    backgroundColor: window.chartColors.purple,
                     fill: false,
                     yAxisID: 'y-axis-1'
                 }
