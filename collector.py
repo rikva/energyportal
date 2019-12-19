@@ -41,6 +41,11 @@ converters = [
         'name': 'kwh_low_total',
         'method': lambda x: float(x.lstrip(b'(').rstrip(b'*kWh)\r\n'))
     },
+    {
+        'prefix': b'1-0:2.7.0',
+        'name': 'kw_produced',
+        'method': lambda x: float(x.lstrip(b'(').rstrip(b'*kWh)\r\n'))
+    },
 ]
 
 
@@ -79,7 +84,7 @@ if __name__ == '__main__':
             output.write(json.dumps(d))
             output.write('\n')
 
-            if len(d) != 5:
+            if len(d) != (len(converters) + 1):
                 # Missing data
                 continue
 
@@ -88,5 +93,6 @@ if __name__ == '__main__':
                 d['kwh_high_total'],
                 d['kwh_low_total'],
                 d['kw_current'],
-                d['gas_m3_total']
+                d['gas_m3_total'],
+                d['kw_produced'],
             )
