@@ -17,18 +17,21 @@ def create_db():
                   kwh_low_total REAL,
                   kw_current REAL,
                   gas_m3_total REAL,
-                  kw_produced REAL)""")
+                  kw_produced REAL,
+                  kwh_produced_low_total REAL,
+                  kwh_produced_high_total REAL)""")
     conn.commit()
 
 
 def insert_datapoint(timestamp, kwh_high_total, kwh_low_total,
-                     kw_current, gas_m3_total, kw_produced):
+                     kw_current, gas_m3_total, kw_produced,
+                     kwh_produced_low_total, kwh_produced_high_total):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute(
-        "INSERT INTO datapoints VALUES ({0},{1},{2},{3},{4},{5})".format(
+        "INSERT INTO datapoints VALUES ({0},{1},{2},{3},{4},{5},{6},{7})".format(
             timestamp, kwh_high_total, kwh_low_total, kw_current, gas_m3_total,
-            kw_produced))
+            kw_produced, kwh_produced_low_total, kwh_produced_high_total))
     conn.commit()
 
 
@@ -85,6 +88,8 @@ def get_data_points(interval, points):
                 'kw_current': result[4],
                 'kw_minimum': result[5],
                 'kw_produced': result[6],
+                'kwh_produced_low_total': result[7],
+                'kwh_produced_high_total': result[8],
             }
         except TypeError:
             # timestamp was None

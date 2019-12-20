@@ -46,6 +46,16 @@ converters = [
         'name': 'kw_produced',
         'method': lambda x: float(x.lstrip(b'(').rstrip(b'*kWh)\r\n'))
     },
+    {
+        'prefix': b'1-0:2.8.1',
+        'name': 'kwh_produced_low_total',
+        'method': lambda x: float(x.lstrip(b'(').rstrip(b'*kWh)\r\n'))
+    },
+    {
+        'prefix': b'1-0:2.8.2',
+        'name': 'kwh_produced_high_total',
+        'method': lambda x: float(x.lstrip(b'(').rstrip(b'*kWh)\r\n'))
+    },
 ]
 
 
@@ -95,4 +105,6 @@ if __name__ == '__main__':
                 d['kw_current'],
                 d['gas_m3_total'],
                 d['kw_produced'],
+                d['kwh_produced_low_total'],
+                d['kwh_produced_high_total'],
             )
